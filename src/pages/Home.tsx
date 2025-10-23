@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCountries } from "../hooks/useCountries";
+import { Link } from "react-router-dom";
+
 
 const Home = () => {
   // -------------------------
@@ -75,23 +77,17 @@ const Home = () => {
       </div>
 
       {/* Countries Grid */}
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {paginated.map((c: any) => (
-          <li
-            key={c.cca3}
-            className="p-4 border rounded-lg shadow-sm hover:shadow-md transition"
-          >
-            <img
-              src={c.flags?.png}
-              alt={`Flag of ${c.name?.common}`}
-              className="w-16 h-auto mb-2"
-            />
-            <h2 className="font-semibold">{c.name?.common}</h2>
-            <p>{c.region}</p>
-            <p>{c.capital?.[0] ?? "No capital"}</p>
-          </li>
-        ))}
-      </ul>
+     {paginated.map((c: any) => (
+  <li key={c.cca3} className="p-4 border rounded-lg shadow-sm hover:shadow-md transition">
+    <Link to={`/country/${c.cca3}`} className="block">
+      <img src={c.flags?.png} alt={`Flag of ${c.name?.common}`} className="w-16 h-auto mb-2" />
+      <h2 className="font-semibold">{c.name?.common}</h2>
+      <p>{c.region}</p>
+      <p>{c.capital?.[0] ?? "No capital"}</p>
+    </Link>
+  </li>
+))}
+
 
       {/* Pagination Controls */}
       <div className="flex justify-center items-center gap-4 mt-6">
