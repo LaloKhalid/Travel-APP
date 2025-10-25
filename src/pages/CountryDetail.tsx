@@ -1,11 +1,25 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useCountry } from "../hooks/useCountry";
 import { useWikipediaSummary } from "../hooks/useWikipediaSummary";
+import { useWeather } from "../hooks/useWeather";
+
+
 
 export default function CountryDetail() {
   const { code } = useParams<{ code?: string }>();
   const navigate = useNavigate();
   const { data: country, isLoading, isError, refetch } = useCountry(code);
+
+const capitalLat = country?.capitalInfo?.latlng?.[0];
+const capitalLon = country?.capitalInfo?.latlng?.[1];
+const fallbackLat = country?.latlng?.[0];
+const fallbackLon = country?.latlng?.[1];
+
+const lat = capitalLat ?? fallbackLat;
+const lon = capitalLon ?? fallbackLon;
+
+const { data: weather, isLoading: weatherLoading, isError: weatherError, refetch: refetchWeather } = useWeather(lat, lon);
+
 
   // ✅ Always call Wikipedia hook — even if country is null
   const name = country?.name?.common ?? "";
@@ -89,6 +103,31 @@ export default function CountryDetail() {
 
         <div>
           <h2 className="font-semibold">Coordinates</h2>
+          <section className="mt-6">
+  <h2 className="font-semibold">Current Weather</h2>
+  {weatherLoading && <p>Loading weather...</p>}
+  {weatherError && (
+    <p>
+      Failed to load weather.{" "}
+      <button
+        onClick={() => refetchWeather()}
+        className="underline text-blue-500"
+      >
+        Try again
+      </button>
+    </p>
+  )}
+  {weather?.current_weather && (
+    <p className="mt-2">
+      🌡️ {weather.current_weather.temperature}°C —{" "}
+      {weather.current_weather.weathercode === 0
+        ? "Clear"
+        : "Cloudy/Other"}{" "}
+      (windspeed: {weather.current_weather.windspeed} km/h)
+    </p>
+  )}
+</section>
+
           <p className="mt-2">
             Capital coords: {country?.capitalInfo?.latlng?.[0] ?? "—"},{" "}
             {country?.capitalInfo?.latlng?.[1] ?? "—"}
