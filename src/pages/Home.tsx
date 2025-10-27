@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import { useCountries } from "../hooks/useCountries";
 import { Link, useSearchParams } from "react-router-dom";
-import Spinner from "../components/Spinner"
-
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const { data: countries, isLoading, isError } = useCountries();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Helpers
   const parseNumberParam = (key: string, fallback: number) => {
     const v = searchParams.get(key);
     if (!v) return fallback;
@@ -21,6 +19,7 @@ const Home = () => {
   const [region, setRegion] = useState(searchParams.get("region") ?? "All");
   const [page, setPage] = useState(parseNumberParam("page", 1));
   const [pageSize, setPageSize] = useState(parseNumberParam("pageSize", 12));
+  const [isPageLoading, setIsPageLoading] = useState(false);
 
   const regions = ["All", "Africa", "Americas", "Asia", "Europe", "Oceania", "Antarctic"];
 
@@ -31,14 +30,23 @@ const Home = () => {
     if (region && region !== "All") params.region = region;
     if (page && page !== 1) params.page = String(page);
     if (pageSize && pageSize !== 12) params.pageSize = String(pageSize);
-
     setSearchParams(params);
   }, [query, region, page, pageSize, setSearchParams]);
 
   // Reset page when query or region changes
   useEffect(() => {
+    setIsPageLoading(true);
     setPage(1);
+    const timer = setTimeout(() => setIsPageLoading(false), 200); // short delay for UX
+    return () => clearTimeout(timer);
   }, [query, region]);
+
+  // Page change handler
+  const goToPage = (newPage: number) => {
+    setIsPageLoading(true);
+    setPage(newPage);
+    setTimeout(() => setIsPageLoading(false), 200);
+  };
 
   // Filter countries
   const searched =
@@ -52,21 +60,11 @@ const Home = () => {
   const totalPages = Math.max(1, Math.ceil(filteredCountries.length / pageSize));
   const paginated = filteredCountries.slice((page - 1) * pageSize, page * pageSize);
 
-  if (!filteredCountries || filteredCountries.length === 0) {
-  return (
-    <main className="p-4 max-w-6xl mx-auto">
-      {/* keep search & filters here or render message in place of grid */}
-      <p className="mt-4 text-center">No countries match your criteria.</p>
-    </main>
-  );
-}
-
   // Loading & error handling
   if (isLoading) return <main className="p-4"><Spinner /> Loading...</main>;
-  if (isError) return <p>Failed to load countries.</p>;
-  if (!countries || countries.length === 0) return <p>No countries found.</p>;
+  if (isError) return <main className="p-4 text-red-500">Failed to load countries.</main>;
+  if (!countries || countries.length === 0) return <main className="p-4">No countries found.</main>;
 
-  // UI
   return (
     <main className="p-4 max-w-6xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Countries</h1>
@@ -96,28 +94,34 @@ const Home = () => {
         ))}
       </div>
 
-      {/* Countries Grid */}
-      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        {paginated.map((c: any) => (
-          <li key={c.cca3} className="p-4 border rounded-lg shadow-sm hover:shadow-md transition">
-            <Link to={`/country/${c.cca3}`} className="block">
-              <img
-                src={c.flags?.png}
-                alt={`Flag of ${c.name?.common}`}
-                className="w-16 h-auto mb-2"
-              />
-              <h2 className="font-semibold">{c.name?.common}</h2>
-              <p>{c.region}</p>
-              <p>{c.capital?.[0] ?? "No capital"}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {/* Countries Grid or Empty Message */}
+      {isPageLoading ? (
+        <div className="flex justify-center items-center h-32"><Spinner /></div>
+      ) : paginated.length > 0 ? (
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {paginated.map((c: any) => (
+            <li key={c.cca3} className="p-4 border rounded-lg shadow-sm hover:shadow-md transition">
+              <Link to={`/country/${c.cca3}`} className="block">
+                <img
+                  src={c.flags?.png}
+                  alt={`Flag of ${c.name?.common}`}
+                  className="w-16 h-auto mb-2"
+                />
+                <h2 className="font-semibold">{c.name?.common}</h2>
+                <p>{c.region}</p>
+                <p>{c.capital?.[0] ?? "No capital"}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-4 text-center">Inga länder matchar dina kriterier.</p>
+      )}
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-4 mt-6">
         <button
-          onClick={() => setPage((p) => p - 1)}
+          onClick={() => goToPage(page - 1)}
           disabled={page === 1}
           className="px-3 py-1 border rounded disabled:opacity-50"
         >
@@ -129,7 +133,7 @@ const Home = () => {
         </span>
 
         <button
-          onClick={() => setPage((p) => p + 1)}
+          onClick={() => goToPage(page + 1)}
           disabled={page === totalPages || totalPages === 0}
           className="px-3 py-1 border rounded disabled:opacity-50"
         >
