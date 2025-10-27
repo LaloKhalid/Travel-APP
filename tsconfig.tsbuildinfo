@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/spinner.tsx","./src/hooks/usecountries.tsx","./src/hooks/usecountry.tsx","./src/hooks/useimages.tsx","./src/hooks/useweather.tsx","./src/hooks/usewikipediasummary.tsx","./src/pages/countrydetail.tsx","./src/pages/home.tsx"],"errors":true,"version":"5.9.3"}
