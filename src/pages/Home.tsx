@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useCountries } from "../hooks/useCountries";
 import { Link, useSearchParams } from "react-router-dom";
+import Spinner from "../components/Spinner"
+
 
 const Home = () => {
   const { data: countries, isLoading, isError } = useCountries();
@@ -50,8 +52,17 @@ const Home = () => {
   const totalPages = Math.max(1, Math.ceil(filteredCountries.length / pageSize));
   const paginated = filteredCountries.slice((page - 1) * pageSize, page * pageSize);
 
+  if (!filteredCountries || filteredCountries.length === 0) {
+  return (
+    <main className="p-4 max-w-6xl mx-auto">
+      {/* keep search & filters here or render message in place of grid */}
+      <p className="mt-4 text-center">No countries match your criteria.</p>
+    </main>
+  );
+}
+
   // Loading & error handling
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <main className="p-4"><Spinner /> Loading...</main>;
   if (isError) return <p>Failed to load countries.</p>;
   if (!countries || countries.length === 0) return <p>No countries found.</p>;
 
