@@ -17,5 +17,5 @@ export function useCountries(){
     })
 
 
-    console.log("countries data:", countries)
+  
 }
