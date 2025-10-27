@@ -100,7 +100,7 @@ const Home = () => {
       ) : paginated.length > 0 ? (
         <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {paginated.map((c: any) => (
-            <li key={c.cca3} className="p-4 border rounded-lg shadow-sm hover:shadow-md transition">
+            <li className="p-4 border rounded-lg shadow-sm hover:shadow-lg transition transform hover:scale-105" key={c.cca3} className="p-4 border rounded-lg shadow-sm hover:shadow-md transition">
               <Link to={`/country/${c.cca3}`} className="block">
                 <img
                   src={c.flags?.png}
