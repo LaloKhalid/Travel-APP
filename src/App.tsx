@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import tailwindcss from 'tailwindcss'
 import './App.css'
 import { Routes, Route} from "react-router-dom";

@@ -13,7 +13,12 @@
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": false
+   
+
   },
   "include": ["src"]
 }
