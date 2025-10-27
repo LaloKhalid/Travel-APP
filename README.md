@@ -1,73 +1,51 @@
-# React + TypeScript + Vite
+# 🌍 Travel App (Reseapp)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React travel app that fetches data from APIs and presents countries in a **clear, user-friendly, and accessible way**.  
 
-Currently, two official plugins are available:
+The app features a paginated list of countries on the homepage with a search field and continent buttons (region filters). Each country opens a detailed page showing **basic info, current weather, and images**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 💡 About
+This project was created as a final assignment for the course JavaScript-3 at Grit Academy.
+The goal was to build a **React-based travel app** using APIs to fetch country data, weather, and images, while ensuring **accessibility and responsiveness**.  
+---
 
-## Expanding the ESLint configuration
+## ✨ Features
+- 🔍 Search field to find specific countries  
+- 🌐 Paginated list of countries (10–20 per page)  
+- 🗺️ Continent filter buttons: Africa, Americas, Asia, Europe, Oceania, Antarctic + All  
+- 🏳️ Each country detail page includes:
+  - Flag (with meaningful alt text)  
+  - Name and official name (if available)  
+  - Region / Subregion  
+  - Capital (if available)  
+  - Population, language, currency  
+  - Current weather (from Open-Meteo/OpenWeather)  
+  - At least 3 images (Unsplash/Pexels)  
+  - Short intro text (Wikipedia summary) with source  
+- 🔄 Pagination with next/previous buttons and page indicators  
+- ⏳ Loading skeleton/spinner  
+- ❌ Error handling with clear messages and retry button  
+- ♿ Accessibility: semantic HTML, alt texts, aria-labels, keyboard navigation  
+- 📱 Responsive design (mobile-first, minimum 2 breakpoints)
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+🎮 Usage
+- Search for countries using the search field.
+- Filter by continent using the continent buttons.
+- Navigate pages using the pagination buttons.
+- Click a country to see detailed information, current weather, and images.
+- Use the “Back” button to return to the country list.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+🧰 Built With
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+⚛️ React (Vite or Next.js)
+🧭 React Router v6+
+💎 TypeScript
+🖌️ Tailwind CSS
+🔄 TanStack Query
+☁️ Netlify (optional)
