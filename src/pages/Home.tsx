@@ -67,7 +67,7 @@ const Home = () => {
 
   return (
     <main className="p-4 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Countries</h1>
+      <h1 className="text-2xl font-bold mb-4">My Travel App</h1>
 
       {/* Search Field */}
       <input
